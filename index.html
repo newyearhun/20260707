@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="로또 추첨기 페이지" />
-    <title>濡쒕삉 異붿꺼湲?</title>
+    <title>로또 추첨기</title>
     <style>
       :root {
         color-scheme: light;
@@ -207,13 +207,13 @@
         <div class="brand">
           <div class="brand-mark">S</div>
           <div>
-            濡쒕삉 異붿꺼湲?
-            <small>?곕쑜???щ┝ ??쨌 ?ㅽ?踰낆뒪 洹몃┛ ?쒖뒪??諛섏쁺</small>
+            로또 추첨기
+            <small>오늘의 행운을 확인하는 랜덤 번호 생성기</small>
           </div>
         </div>
         <div class="nav-actions">
-          <button class="ghost" id="resetBtn" type="button">珥덇린??</button>
-          <button class="solid" id="drawBtn" type="button">異붿꺼?섍린</button>
+          <button class="ghost" id="resetBtn" type="button">초기화</button>
+          <button class="solid" id="drawBtn" type="button">추첨하기</button>
         </div>
       </header>
 
@@ -221,27 +221,26 @@
         <section class="hero">
           <article class="intro">
             <span class="badge">Lucky Draw</span>
-            <h1>濡쒕삉 異붿꺼湲곕? ???μ쓽 源붾걫??移대뱶濡?</h1>
+            <h1>로또 추첨기를 통해 오늘의 행운을 확인하세요</h1>
             <p class="lead">
-              ?щ┝??諛곌꼍, 吏꾪븳 洹몃┛ ?ъ씤?? ?κ렐 踰꾪듉怨?遺?쒕윭??洹몃┝?먮줈
-              濡쒕삉 異붿꺼湲??먮굦??留뚮뱾?덉뒿?덈떎. 踰꾪듉???꾨Ⅴ硫?踰덊샇媛 ?욎씠怨?
-              ?꾨옒 寃곌낵 移대뱶???뱀꺼 ?レ옄媛 ?쒖떆?⑸땲??
+              버튼을 누르면 6개의 번호와 보너스 번호가 자동으로 생성됩니다.
+              추첨 결과는 아래 카드와 기록에 저장되며, 버튼을 누를 때마다 새로운 번호가 생성됩니다.
             </p>
 
             <div class="feature-row">
-              <div class="feature"><strong>6媛?踰덊샇</strong><span>湲곕낯 6媛?議고빀???먮룞?쇰줈 戮묒뒿?덈떎.</span></div>
-              <div class="feature"><strong>蹂대꼫???ы븿</strong><span>留덉?留됱뿉 蹂대꼫??踰덊샇???④퍡 蹂댁뿬以띾땲??</span></div>
-              <div class="feature"><strong>遺?쒕윭???곗텧</strong><span>蹂??붾뱾由쇨낵 ???좊땲硫붿씠?섏쑝濡??앸룞媛먯쓣 以띾땲??</span></div>
+              <div class="feature"><strong>6개 번호</strong><span>기본 6개 조합을 자동으로 뽑습니다.</span></div>
+              <div class="feature"><strong>보너스 포함</strong><span>마지막에 보너스 번호를 함께 보여줍니다.</span></div>
+              <div class="feature"><strong>부드러운 연출</strong><span>공이 흔들리고 애니메이션으로 생동감을 줍니다.</span></div>
             </div>
           </article>
 
-          <article class="machine" aria-label="濡쒕삉 異붿꺼湲?>
+          <article class="machine" aria-label="로또 추첨기">
             <div class="machine-head">
               <div>
-                <h2>異붿꺼湲?</h2>
-                <p>踰꾪듉???꾨Ⅴ硫??대? 怨듭씠 ?붾뱾由ш퀬 寃곌낵媛 ?앹꽦?⑸땲??</p>
+                <h2>추첨기</h2>
+                <p>버튼을 누르면 공이 흔들리고 결과가 생성됩니다.</p>
               </div>
-              <button class="pill" id="quickDrawBtn" type="button">吏湲?戮묎린</button>
+              <button class="pill" id="quickDrawBtn" type="button">지금 뽑기</button>
             </div>
 
             <div class="window" id="machineWindow">
@@ -252,8 +251,8 @@
             </div>
 
             <div class="controls">
-              <button class="solid" id="drawBtn2" type="button">踰덊샇 異붿꺼</button>
-              <button class="ghost" id="soundBtn" type="button">?④낵 ?곗텧</button>
+              <button class="solid" id="drawBtn2" type="button">번호 추첨</button>
+              <button class="ghost" id="soundBtn" type="button">효과 재생</button>
             </div>
           </article>
         </section>
@@ -261,10 +260,10 @@
         <section class="results" aria-live="polite">
           <div class="results-header">
             <div>
-              <h2>?ㅻ뒛???뱀꺼 踰덊샇</h2>
-              <div class="meta" id="drawMeta">?꾩쭅 異붿꺼 ?꾩엯?덈떎.</div>
+              <h2>오늘의 당첨 번호</h2>
+              <div class="meta" id="drawMeta">아직 추첨 전입니다.</div>
             </div>
-            <div class="meta">1 ~ 45 踰붿쐞?먯꽌 臾댁옉??6媛?+ 蹂대꼫??1媛?</div>
+            <div class="meta">1 ~ 45 범위에서 무작위 6개 + 보너스 1개</div>
           </div>
           <div class="numbers" id="numbers">
             <div class="lotto-ball">?</div><div class="lotto-ball">?</div><div class="lotto-ball">?</div>
@@ -274,28 +273,28 @@
         </section>
         <section class="grid">
           <article class="history">
-            <h2>理쒓렐 湲곕줉</h2>
+            <h2>최근 기록</h2>
             <ol id="historyList">
-              <li><span class="tag">?湲?以?</span><span>泥?異붿꺼???쒖옉?대낫?몄슂</span></li>
+              <li><span class="tag">대기 중</span><span>첫 추첨을 시작해보세요</span></li>
             </ol>
           </article>
 
           <article class="info">
-            <h2>?ъ슜 ?덈궡</h2>
+            <h2>사용 안내</h2>
             <p>
-              ???섏씠吏???⑥씪 `index.html`留뚯쑝濡??숈옉?⑸땲?? ?몃? ?쇱씠釉뚮윭由??놁씠
-              諛붾줈 ?????덇퀬, ?꾩슂?섎㈃ ?붿옄???ㅻ쭔 ?좎???梨?湲곕뒫????遺숈씪 ???덉뒿?덈떎.
+              이 페이지는 단일 `index.html`만으로 동작합니다. 별도 라이브러리 없이 바로 열 수 있고,
+              필요하면 추첨 기능만 독립적으로 유지할 수 있습니다.
             </p>
             <ul>
-              <li>異붿꺼 踰꾪듉???꾨Ⅴ硫?6媛?踰덊샇? 蹂대꼫??踰덊샇媛 ?앹꽦?⑸땲??</li>
-              <li>珥덇린??踰꾪듉?쇰줈 ?붾㈃ ?곹깭瑜?泥섏쓬泥섎읆 ?섎룎由????덉뒿?덈떎.</li>
-              <li>紐⑤컮?쇱뿉?쒕룄 移대뱶媛 ?몃줈濡??볦씠?꾨줉 諛섏쓳?뺤쑝濡?援ъ꽦?덉뒿?덈떎.</li>
+              <li>추첨 버튼을 누르면 6개의 번호와 보너스 번호가 생성됩니다.</li>
+              <li>초기화 버튼으로 화면 상태를 처음처럼 되돌릴 수 있습니다.</li>
+              <li>모바일에서도 카드가 자연스럽게 반응하도록 구성했습니다.</li>
             </ul>
           </article>
         </section>
       </main>
 
-      <button class="frap" id="frapBtn" type="button" aria-label="鍮좊Ⅸ 異붿꺼">
+      <button class="frap" id="frapBtn" type="button" aria-label="빠른 추첨">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M7 4h10l2 5-2.5 1.8c.2.7.3 1.4.3 2.2s-.1 1.5-.3 2.2L19 17l-2 5H7l-2-5 2.5-1.8c-.2-.7-.3-1.4-.3-2.2s.1-1.5.3-2.2L5 9l2-5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
           <path d="M9.3 9.5a3.6 3.6 0 0 1 5.4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
@@ -354,7 +353,7 @@
         });
 
         const timestamp = new Date();
-        drawMetaEl.textContent = `異붿꺼 ?꾨즺 쨌 ${timestamp.toLocaleString("ko-KR", {
+        drawMetaEl.textContent = `추첨 완료 · ${timestamp.toLocaleString("ko-KR", {
           month: "2-digit",
           day: "2-digit",
           hour: "2-digit",
@@ -391,8 +390,8 @@
           <div class="lotto-ball">?</div><div class="lotto-ball">?</div><div class="lotto-ball">?</div>
           <div class="lotto-ball star">+</div>
         `;
-        drawMetaEl.textContent = "?꾩쭅 異붿꺼 ?꾩엯?덈떎.";
-        historyListEl.innerHTML = '<li><span class="tag">?湲?以?</span><span>泥?異붿꺼???쒖옉?대낫?몄슂</span></li>';
+        drawMetaEl.textContent = "아직 추첨 전입니다.";
+        historyListEl.innerHTML = '<li><span class="tag">대기 중</span><span>첫 추첨을 시작해보세요</span></li>';
       }
 
       drawButtons.forEach((button) => button.addEventListener("click", draw));
@@ -403,4 +402,5 @@
     </script>
   </body>
 </html>
+
 
