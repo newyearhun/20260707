@@ -1,10 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="스타벅스 디자인 시스템을 반영한 로또 추첨기" />
-    <title>로또 추첨기</title>
+    <meta name="description" content="?ㅽ?踰낆뒪 ?붿옄???쒖뒪?쒖쓣 諛섏쁺??濡쒕삉 異붿꺼湲? />
+    <title>濡쒕삉 異붿꺼湲?/title>
     <style>
       :root {
         color-scheme: light;
@@ -77,7 +77,7 @@
         gap: 2.4rem;
         align-items: center;
       }
-      .intro, .machine, .results, .archive, .history { background: var(--white); border-radius: var(--card); box-shadow: var(--shadow); }
+      .intro, .machine, .results, .history { background: var(--white); border-radius: var(--card); box-shadow: var(--shadow); }
       .intro { padding: 3.2rem; border: 1px solid rgba(0,0,0,0.04); }
       .badge {
         display: inline-flex; align-items: center; gap: 0.8rem;
@@ -101,7 +101,7 @@
         background: radial-gradient(circle at 35% 30%, rgba(0,117,74,0.09), transparent 22%), linear-gradient(180deg, #ffffff 0%, #f9f7f2 100%);
       }
       .machine-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.6rem; margin-bottom: 1.8rem; }
-      .machine-head h2, .results-header h2, .archive-head h2, .history h2, .info h2 { margin: 0; font-size: 2rem; color: var(--green-brand); }
+      .machine-head h2, .results-header h2, .history h2, .info h2 { margin: 0; font-size: 2rem; color: var(--green-brand); }
       .machine-head p { margin: 0.6rem 0 0; font-size: 1.3rem; color: var(--muted); line-height: 1.5; }
       .window {
         position: relative; aspect-ratio: 1 / 1; border-radius: 50%; margin: 0 auto; max-width: 38rem;
@@ -138,8 +138,8 @@
       .ball:nth-child(9) { top: 52%; left: 26%; animation-delay: -1.2s; }
       .ball:nth-child(10) { top: 28%; left: 33%; animation-delay: -1.9s; }
 
-      .results, .archive { width: min(116rem, calc(100% - 3.2rem)); margin: 2.4rem auto 0; padding: 2.4rem 3.2rem 3.2rem; }
-      .results-header, .archive-head { display: flex; align-items: center; justify-content: space-between; gap: 1.6rem; flex-wrap: wrap; }
+      .results { width: min(116rem, calc(100% - 3.2rem)); margin: 2.4rem auto 0; padding: 2.4rem 3.2rem 3.2rem; }
+      .results-header { display: flex; align-items: center; justify-content: space-between; gap: 1.6rem; flex-wrap: wrap; }
       .meta { font-size: 1.3rem; color: var(--muted); }
 
       .numbers {
@@ -156,17 +156,6 @@
         animation: pop 260ms ease-out;
       }
       .lotto-ball.star { background: radial-gradient(circle at 32% 28%, #fff8e6 0%, #f5dd9a 25%, #d9a93d 72%, #b88613 100%); }
-      .archive .lotto-ball {
-        width: 3.8rem; height: 3.8rem; font-size: 1.2rem;
-        box-shadow: 0 0.6rem 1.2rem rgba(0,0,0,0.1), inset 0 0 0 0.1rem rgba(0,0,0,0.08);
-      }
-
-      .archive-status { margin-top: 1.2rem; font-size: 1.3rem; color: var(--muted); }
-      .archive-grid { margin-top: 1.6rem; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1rem; }
-      .archive-card { padding: 1.2rem; border-radius: 12px; background: var(--ceramic); border: 1px solid rgba(0,0,0,0.04); }
-      .archive-card strong { display: block; margin-bottom: 0.8rem; color: var(--green-dark); font-size: 1.4rem; }
-      .archive-card .ball-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-
       .grid { width: min(116rem, calc(100% - 3.2rem)); margin: 2.4rem auto 3.2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2.4rem; }
       .history, .info { padding: 2.4rem; }
       .history ol { margin: 1.6rem 0 0; padding: 0; list-style: none; display: grid; gap: 1rem; }
@@ -203,8 +192,8 @@
         .feature-row { grid-template-columns: 1fr; }
       }
       @media (max-width: 640px) {
-        .hero, .results, .archive, .grid { width: calc(100% - 2rem); }
-        .intro, .machine, .results, .archive, .history, .info { padding: 1.8rem; }
+        .hero, .results, .grid { width: calc(100% - 2rem); }
+        .intro, .machine, .results, .history, .info { padding: 1.8rem; }
         .window { border-width: 0.8rem; }
         .ball { width: 4rem; height: 4rem; font-size: 1.2rem; }
         .lotto-ball { width: 4.8rem; height: 4.8rem; }
@@ -218,13 +207,12 @@
         <div class="brand">
           <div class="brand-mark">S</div>
           <div>
-            로또 추첨기
-            <small>따뜻한 크림 톤 · 스타벅스 그린 시스템 반영</small>
+            濡쒕삉 異붿꺼湲?            <small>?곕쑜???щ┝ ??쨌 ?ㅽ?踰낆뒪 洹몃┛ ?쒖뒪??諛섏쁺</small>
           </div>
         </div>
         <div class="nav-actions">
-          <button class="ghost" id="resetBtn" type="button">초기화</button>
-          <button class="solid" id="drawBtn" type="button">추첨하기</button>
+          <button class="ghost" id="resetBtn" type="button">珥덇린??/button>
+          <button class="solid" id="drawBtn" type="button">異붿꺼?섍린</button>
         </div>
       </header>
 
@@ -232,27 +220,27 @@
         <section class="hero">
           <article class="intro">
             <span class="badge">Lucky Draw</span>
-            <h1>로또 추첨기를 한 장의 깔끔한 카드로</h1>
+            <h1>濡쒕삉 異붿꺼湲곕? ???μ쓽 源붾걫??移대뱶濡?/h1>
             <p class="lead">
-              크림색 배경, 진한 그린 포인트, 둥근 버튼과 부드러운 그림자로
-              로또 추첨기 느낌을 만들었습니다. 버튼을 누르면 번호가 섞이고,
-              아래 결과 카드에 당첨 숫자가 표시됩니다.
+              ?щ┝??諛곌꼍, 吏꾪븳 洹몃┛ ?ъ씤?? ?κ렐 踰꾪듉怨?遺?쒕윭??洹몃┝?먮줈
+              濡쒕삉 異붿꺼湲??먮굦??留뚮뱾?덉뒿?덈떎. 踰꾪듉???꾨Ⅴ硫?踰덊샇媛 ?욎씠怨?
+              ?꾨옒 寃곌낵 移대뱶???뱀꺼 ?レ옄媛 ?쒖떆?⑸땲??
             </p>
 
             <div class="feature-row">
-              <div class="feature"><strong>6개 번호</strong><span>기본 6개 조합을 자동으로 뽑습니다.</span></div>
-              <div class="feature"><strong>보너스 포함</strong><span>마지막에 보너스 번호도 함께 보여줍니다.</span></div>
-              <div class="feature"><strong>부드러운 연출</strong><span>볼 흔들림과 팝 애니메이션으로 생동감을 줍니다.</span></div>
+              <div class="feature"><strong>6媛?踰덊샇</strong><span>湲곕낯 6媛?議고빀???먮룞?쇰줈 戮묒뒿?덈떎.</span></div>
+              <div class="feature"><strong>蹂대꼫???ы븿</strong><span>留덉?留됱뿉 蹂대꼫??踰덊샇???④퍡 蹂댁뿬以띾땲??</span></div>
+              <div class="feature"><strong>遺?쒕윭???곗텧</strong><span>蹂??붾뱾由쇨낵 ???좊땲硫붿씠?섏쑝濡??앸룞媛먯쓣 以띾땲??</span></div>
             </div>
           </article>
 
-          <article class="machine" aria-label="로또 추첨기">
+          <article class="machine" aria-label="濡쒕삉 異붿꺼湲?>
             <div class="machine-head">
               <div>
-                <h2>추첨기</h2>
-                <p>버튼을 누르면 내부 공이 흔들리고 결과가 생성됩니다.</p>
+                <h2>異붿꺼湲?/h2>
+                <p>踰꾪듉???꾨Ⅴ硫??대? 怨듭씠 ?붾뱾由ш퀬 寃곌낵媛 ?앹꽦?⑸땲??</p>
               </div>
-              <button class="pill" id="quickDrawBtn" type="button">지금 뽑기</button>
+              <button class="pill" id="quickDrawBtn" type="button">吏湲?戮묎린</button>
             </div>
 
             <div class="window" id="machineWindow">
@@ -263,8 +251,8 @@
             </div>
 
             <div class="controls">
-              <button class="solid" id="drawBtn2" type="button">번호 추첨</button>
-              <button class="ghost" id="soundBtn" type="button">효과 연출</button>
+              <button class="solid" id="drawBtn2" type="button">踰덊샇 異붿꺼</button>
+              <button class="ghost" id="soundBtn" type="button">?④낵 ?곗텧</button>
             </div>
           </article>
         </section>
@@ -272,10 +260,10 @@
         <section class="results" aria-live="polite">
           <div class="results-header">
             <div>
-              <h2>오늘의 당첨 번호</h2>
-              <div class="meta" id="drawMeta">아직 추첨 전입니다.</div>
+              <h2>?ㅻ뒛???뱀꺼 踰덊샇</h2>
+              <div class="meta" id="drawMeta">?꾩쭅 異붿꺼 ?꾩엯?덈떎.</div>
             </div>
-            <div class="meta">1 ~ 45 범위에서 무작위 6개 + 보너스 1개</div>
+            <div class="meta">1 ~ 45 踰붿쐞?먯꽌 臾댁옉??6媛?+ 蹂대꼫??1媛?/div>
           </div>
           <div class="numbers" id="numbers">
             <div class="lotto-ball">?</div><div class="lotto-ball">?</div><div class="lotto-ball">?</div>
@@ -283,42 +271,30 @@
             <div class="lotto-ball star">+</div>
           </div>
         </section>
-
-        <section class="archive" aria-label="최근 10회 로또 번호">
-          <div class="archive-head">
-            <div>
-              <h2>최근 10회 로또 번호</h2>
-              <div class="meta">로컬 캐시로 최근 10회 당첨번호를 바로 확인할 수 있습니다.</div>
-            </div>
-          </div>
-          <div class="archive-status" id="archiveStatus">최근 10회 당첨번호를 로컬에서 정리하는 중입니다.</div>
-          <div class="archive-grid" id="archiveGrid"></div>
-        </section>
-
         <section class="grid">
           <article class="history">
-            <h2>최근 기록</h2>
+            <h2>理쒓렐 湲곕줉</h2>
             <ol id="historyList">
-              <li><span class="tag">대기 중</span><span>첫 추첨을 시작해보세요</span></li>
+              <li><span class="tag">?湲?以?/span><span>泥?異붿꺼???쒖옉?대낫?몄슂</span></li>
             </ol>
           </article>
 
           <article class="info">
-            <h2>사용 안내</h2>
+            <h2>?ъ슜 ?덈궡</h2>
             <p>
-              이 페이지는 단일 `index.html`만으로 동작합니다. 외부 라이브러리 없이
-              바로 열 수 있고, 필요하면 디자인 톤만 유지한 채 기능을 더 붙일 수 있습니다.
+              ???섏씠吏???⑥씪 `index.html`留뚯쑝濡??숈옉?⑸땲?? ?몃? ?쇱씠釉뚮윭由??놁씠
+              諛붾줈 ?????덇퀬, ?꾩슂?섎㈃ ?붿옄???ㅻ쭔 ?좎???梨?湲곕뒫????遺숈씪 ???덉뒿?덈떎.
             </p>
             <ul>
-              <li>추첨 버튼을 누르면 6개 번호와 보너스 번호가 생성됩니다.</li>
-              <li>초기화 버튼으로 화면 상태를 처음처럼 되돌릴 수 있습니다.</li>
-              <li>모바일에서도 카드가 세로로 쌓이도록 반응형으로 구성했습니다.</li>
+              <li>異붿꺼 踰꾪듉???꾨Ⅴ硫?6媛?踰덊샇? 蹂대꼫??踰덊샇媛 ?앹꽦?⑸땲??</li>
+              <li>珥덇린??踰꾪듉?쇰줈 ?붾㈃ ?곹깭瑜?泥섏쓬泥섎읆 ?섎룎由????덉뒿?덈떎.</li>
+              <li>紐⑤컮?쇱뿉?쒕룄 移대뱶媛 ?몃줈濡??볦씠?꾨줉 諛섏쓳?뺤쑝濡?援ъ꽦?덉뒿?덈떎.</li>
             </ul>
           </article>
         </section>
       </main>
 
-      <button class="frap" id="frapBtn" type="button" aria-label="빠른 추첨">
+      <button class="frap" id="frapBtn" type="button" aria-label="鍮좊Ⅸ 異붿꺼">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M7 4h10l2 5-2.5 1.8c.2.7.3 1.4.3 2.2s-.1 1.5-.3 2.2L19 17l-2 5H7l-2-5 2.5-1.8c-.2-.7-.3-1.4-.3-2.2s.1-1.5.3-2.2L5 9l2-5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
           <path d="M9.3 9.5a3.6 3.6 0 0 1 5.4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
@@ -333,8 +309,6 @@
       const historyListEl = document.getElementById("historyList");
       const ballsEl = document.getElementById("balls");
       const machineWindowEl = document.getElementById("machineWindow");
-      const archiveStatusEl = document.getElementById("archiveStatus");
-      const archiveGridEl = document.getElementById("archiveGrid");
 
       const drawButtons = [
         document.getElementById("drawBtn"),
@@ -345,9 +319,6 @@
 
       const resetBtn = document.getElementById("resetBtn");
       const soundBtn = document.getElementById("soundBtn");
-
-      const DEFAULT_LATEST_ROUND = 1231;
-      const RECENT_ROUND_COUNT = 10;
 
       let history = [];
 
@@ -373,38 +344,6 @@
         return el;
       }
 
-      function renderArchiveCard(draw) {
-        const card = document.createElement("article");
-        card.className = "archive-card";
-
-        const label = document.createElement("strong");
-        label.textContent = `${draw.round}회 · ${draw.date}`;
-        card.appendChild(label);
-
-        const row = document.createElement("div");
-        row.className = "ball-row";
-        draw.main.forEach((num) => row.appendChild(makeBall(num)));
-        row.appendChild(makeBall(draw.bonus, true));
-        card.appendChild(row);
-        return card;
-      }
-
-      function loadRecentArchive() {
-        const rounds = Array.from({ length: RECENT_ROUND_COUNT }, (_, index) => DEFAULT_LATEST_ROUND - index);
-        archiveGridEl.innerHTML = "";
-        archiveStatusEl.textContent = "최근 10회 회차는 확인됐지만, 이 환경에서는 공식 숫자 데이터를 안정적으로 가져올 수 없습니다.";
-
-        rounds.forEach((round) => {
-          const card = document.createElement("article");
-          card.className = "archive-card";
-          card.innerHTML = `
-            <strong>${round}회</strong>
-            <div class="meta">공식 번호 확인 필요</div>
-          `;
-          archiveGridEl.appendChild(card);
-        });
-      }
-
       function renderDrawSequentially({ main, bonus }) {
         numbersEl.innerHTML = "";
         [...main, bonus].forEach((value, index) => {
@@ -414,7 +353,7 @@
         });
 
         const timestamp = new Date();
-        drawMetaEl.textContent = `추첨 완료 · ${timestamp.toLocaleString("ko-KR", {
+        drawMetaEl.textContent = `異붿꺼 ?꾨즺 쨌 ${timestamp.toLocaleString("ko-KR", {
           month: "2-digit",
           day: "2-digit",
           hour: "2-digit",
@@ -451,8 +390,8 @@
           <div class="lotto-ball">?</div><div class="lotto-ball">?</div><div class="lotto-ball">?</div>
           <div class="lotto-ball star">+</div>
         `;
-        drawMetaEl.textContent = "아직 추첨 전입니다.";
-        historyListEl.innerHTML = '<li><span class="tag">대기 중</span><span>첫 추첨을 시작해보세요</span></li>';
+        drawMetaEl.textContent = "?꾩쭅 異붿꺼 ?꾩엯?덈떎.";
+        historyListEl.innerHTML = '<li><span class="tag">?湲?以?/span><span>泥?異붿꺼???쒖옉?대낫?몄슂</span></li>';
       }
 
       drawButtons.forEach((button) => button.addEventListener("click", draw));
@@ -460,7 +399,7 @@
       soundBtn.addEventListener("click", animateMachine);
 
       reset();
-      loadRecentArchive();
     </script>
   </body>
 </html>
+
