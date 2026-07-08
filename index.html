@@ -141,6 +141,17 @@
       .results { width: min(116rem, calc(100% - 3.2rem)); margin: 2.4rem auto 0; padding: 2.4rem 3.2rem 3.2rem; }
       .results-header { display: flex; align-items: center; justify-content: space-between; gap: 1.6rem; flex-wrap: wrap; }
       .meta { font-size: 1.3rem; color: var(--muted); }
+      .sync-status {
+        display: inline-flex; align-items: center; gap: 0.6rem;
+        padding: 0.6rem 1rem; border-radius: 999px;
+        background: rgba(0, 117, 74, 0.1);
+        color: var(--green);
+        font-size: 1.2rem; font-weight: 700;
+      }
+      .sync-status::before {
+        content: ""; width: 0.7rem; height: 0.7rem; border-radius: 50%; background: currentColor;
+        box-shadow: 0 0 0 0.45rem rgba(0, 117, 74, 0.12);
+      }
 
       .numbers {
         display: flex; flex-wrap: nowrap; align-items: center; justify-content: flex-start; gap: 1rem;
@@ -264,6 +275,7 @@
               <div class="meta" id="drawMeta">아직 추첨 전입니다.</div>
             </div>
             <div class="meta">1 ~ 45 범위에서 무작위 6개 + 보너스 1개</div>
+            <div class="sync-status" id="syncStatus">Supabase 연결 준비 중</div>
           </div>
           <div class="numbers" id="numbers">
             <div class="lotto-ball">?</div><div class="lotto-ball">?</div><div class="lotto-ball">?</div>
@@ -309,6 +321,12 @@
       const historyListEl = document.getElementById("historyList");
       const ballsEl = document.getElementById("balls");
       const machineWindowEl = document.getElementById("machineWindow");
+      const syncStatusEl = document.getElementById("syncStatus");
+
+      const SUPABASE_URL = "https://zlcnzevlvrqcsanemdkj.supabase.co";
+      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsY256ZXZsdnJxY3NhbmVtZGtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzOTU4MTEsImV4cCI6MjA5ODk3MTgxMX0.sei1G2vXa9q9T-KZQhM2OhS5CbJTOGHEDWtjo_6NsAs";
+      const SUPABASE_TABLE = "lotto_draws";
+      const SUPABASE_MODULE_URL = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
       const drawButtons = [
         document.getElementById("drawBtn"),
@@ -319,8 +337,10 @@
 
       const resetBtn = document.getElementById("resetBtn");
       const soundBtn = document.getElementById("soundBtn");
+      const historyCacheKey = "lotto-draw-history";
 
       let history = [];
+      let supabaseClient = null;
 
       function shuffle(array) {
         const copy = [...array];
@@ -337,11 +357,166 @@
         return { main: picked.slice(0, 6), bonus: picked[6] };
       }
 
+      function formatDraw(draw) {
+        return `${draw.main.join(", ")} + ${draw.bonus}`;
+      }
+
       function makeBall(value, isBonus = false) {
         const el = document.createElement("div");
         el.className = `lotto-ball${isBonus ? " star" : ""}`;
         el.textContent = value;
         return el;
+      }
+
+      function setSyncStatus(message, mode = "loading") {
+        syncStatusEl.textContent = message;
+        syncStatusEl.style.background =
+          mode === "ready"
+            ? "rgba(0, 117, 74, 0.1)"
+            : mode === "error"
+              ? "rgba(200, 32, 20, 0.08)"
+              : "rgba(0, 0, 0, 0.06)";
+        syncStatusEl.style.color =
+          mode === "ready"
+            ? "var(--green)"
+            : mode === "error"
+              ? "var(--text)"
+              : "var(--muted)";
+      }
+
+      function persistLocalHistory() {
+        localStorage.setItem(historyCacheKey, JSON.stringify(history));
+      }
+
+      function loadLocalHistory() {
+        try {
+          const cached = localStorage.getItem(historyCacheKey);
+          if (!cached) {
+            return [];
+          }
+          const parsed = JSON.parse(cached);
+          return Array.isArray(parsed) ? parsed.filter((item) => typeof item === "string") : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function renderHistoryList(items) {
+        historyListEl.innerHTML = "";
+        if (!items.length) {
+          historyListEl.innerHTML = '<li><span class="tag">대기 중</span><span>첫 추첨을 시작해보세요</span></li>';
+          return;
+        }
+
+        items.forEach((item, index) => {
+          const li = document.createElement("li");
+          const tag = document.createElement("span");
+          tag.className = "tag";
+          tag.textContent = `#${index + 1}`;
+          const value = document.createElement("span");
+          value.textContent = item;
+          li.append(tag, value);
+          historyListEl.appendChild(li);
+        });
+      }
+
+      function syncHistoryToView(items) {
+        history = items.slice(0, 5);
+        renderHistoryList(history);
+        persistLocalHistory();
+      }
+
+      async function initSupabase() {
+        const hasConfig =
+          SUPABASE_URL.trim() &&
+          SUPABASE_ANON_KEY.trim() &&
+          !SUPABASE_URL.includes("YOUR_") &&
+          !SUPABASE_ANON_KEY.includes("YOUR_");
+        if (!hasConfig) {
+          setSyncStatus("Supabase 키를 입력하면 DB 저장이 시작됩니다", "loading");
+          syncHistoryToView(loadLocalHistory());
+          return null;
+        }
+
+        try {
+          const { createClient } = await import(SUPABASE_MODULE_URL);
+          supabaseClient = createClient(SUPABASE_URL.trim(), SUPABASE_ANON_KEY.trim());
+          setSyncStatus("Supabase 연결됨", "ready");
+          return supabaseClient;
+        } catch (error) {
+          console.warn("Supabase client initialization failed:", error);
+          setSyncStatus("Supabase 연결 실패, 로컬 기록으로 대체 중", "error");
+          syncHistoryToView(loadLocalHistory());
+          return null;
+        }
+      }
+
+      async function loadSavedDraws() {
+        if (!supabaseClient) {
+          return;
+        }
+
+        const { data, error } = await supabaseClient
+          .from(SUPABASE_TABLE)
+          .select("main_numbers, bonus_number, drawn_at")
+          .order("drawn_at", { ascending: false })
+          .limit(5);
+
+        if (error) {
+          console.warn("Failed to load saved draws:", error);
+          setSyncStatus("Supabase 불러오기 실패, 로컬 기록 사용", "error");
+          syncHistoryToView(loadLocalHistory());
+          return;
+        }
+
+        const records = (data ?? []).map((row) => {
+          const mainNumbers = Array.isArray(row.main_numbers) ? row.main_numbers : [];
+          const bonusNumber = row.bonus_number;
+          const timestamp = row.drawn_at
+            ? new Date(row.drawn_at).toLocaleString("ko-KR", {
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            : "";
+
+          return `${mainNumbers.join(", ")} + ${bonusNumber}${timestamp ? ` · ${timestamp}` : ""}`;
+        });
+
+        if (records.length === 0) {
+          const localHistory = loadLocalHistory();
+          if (localHistory.length > 0) {
+            syncHistoryToView(localHistory);
+            setSyncStatus("Supabase는 비어 있고 로컬 기록을 보여줍니다", "loading");
+            return;
+          }
+        }
+
+        syncHistoryToView(records);
+        if (records.length > 0) {
+          setSyncStatus("Supabase 기록을 불러왔습니다", "ready");
+        }
+      }
+
+      async function saveDrawToSupabase(draw, timestamp) {
+        if (!supabaseClient) {
+          return;
+        }
+
+        const payload = {
+          main_numbers: draw.main,
+          bonus_number: draw.bonus,
+          drawn_at: timestamp.toISOString(),
+        };
+
+        const { error } = await supabaseClient.from(SUPABASE_TABLE).insert(payload);
+        if (error) {
+          console.warn("Failed to save draw:", error);
+          setSyncStatus("Supabase 저장 실패, 로컬 기록만 유지 중", "error");
+        } else {
+          setSyncStatus("Supabase에 저장되었습니다", "ready");
+        }
       }
 
       function renderDrawSequentially({ main, bonus }) {
@@ -360,14 +535,16 @@
           minute: "2-digit",
         })}`;
 
-        const entry = `${main.join(", ")} + ${bonus}`;
+        const entry = `${formatDraw({ main, bonus })} · ${timestamp.toLocaleString("ko-KR", {
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        })}`;
         history = [entry, ...history].slice(0, 5);
-        historyListEl.innerHTML = "";
-        history.forEach((item, index) => {
-          const li = document.createElement("li");
-          li.innerHTML = `<span class="tag">#${index + 1}</span><span>${item}</span>`;
-          historyListEl.appendChild(li);
-        });
+        renderHistoryList(history);
+        persistLocalHistory();
+        void saveDrawToSupabase({ main, bonus }, timestamp);
       }
 
       function animateMachine() {
@@ -384,21 +561,25 @@
       }
 
       function reset() {
-        history = [];
+        history = loadLocalHistory();
         numbersEl.innerHTML = `
           <div class="lotto-ball">?</div><div class="lotto-ball">?</div><div class="lotto-ball">?</div>
           <div class="lotto-ball">?</div><div class="lotto-ball">?</div><div class="lotto-ball">?</div>
           <div class="lotto-ball star">+</div>
         `;
         drawMetaEl.textContent = "아직 추첨 전입니다.";
-        historyListEl.innerHTML = '<li><span class="tag">대기 중</span><span>첫 추첨을 시작해보세요</span></li>';
+        renderHistoryList(history);
       }
 
       drawButtons.forEach((button) => button.addEventListener("click", draw));
       resetBtn.addEventListener("click", reset);
       soundBtn.addEventListener("click", animateMachine);
 
-      reset();
+      (async () => {
+        reset();
+        await initSupabase();
+        await loadSavedDraws();
+      })();
     </script>
   </body>
 </html>
