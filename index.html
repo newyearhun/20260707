@@ -371,6 +371,18 @@
         return `${draw.main.join(", ")} + ${draw.bonus}`;
       }
 
+      function trackDrawButtonClick(sourceId) {
+        if (typeof gtag !== "function") {
+          return;
+        }
+
+        gtag("event", "draw_button_click", {
+          event_category: "engagement",
+          event_label: sourceId,
+          button_id: sourceId,
+        });
+      }
+
       function makeBall(value, isBonus = false) {
         const el = document.createElement("div");
         el.className = `lotto-ball${isBonus ? " star" : ""}`;
@@ -566,6 +578,8 @@
       }
 
       function draw() {
+        const sourceId = this?.id || "unknown";
+        trackDrawButtonClick(sourceId);
         animateMachine();
         setTimeout(() => renderDrawSequentially(generateDraw()), 650);
       }
